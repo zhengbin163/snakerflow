@@ -15,6 +15,18 @@ snaker-core.jar大小208K，代码行数约7000行，强大的扩展支持，不
 **设计器(Web在线/Eclipse插件)**
 
 
+## Snaker Document
+
+
+http://snakerflow.cn:8081/book/index.html
+
+## 联系方式
+
+
+QQ群：979147234
+邮箱：zhaoguoqing360@126.com
+
+
 License
 -----
 Apache License Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
