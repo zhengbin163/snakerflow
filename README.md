@@ -17,12 +17,9 @@ snaker-core.jar大小208K，代码行数约7000行，强大的扩展支持，不
 
 ## Snaker Document
 
+https://yunmel.gitbooks.io/snakerflow/
 
-http://snakerflow.cn:8081/book/index.html
-
-## 联系方式
-
-
+## 联系方式（由于原版的snakerflow，已经不再维护，新的联系沟通群和维护项目，在此维护）
 QQ群：979147234
 邮箱：zhaoguoqing360@126.com
 
