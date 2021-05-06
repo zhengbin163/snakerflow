@@ -37,6 +37,8 @@ import java.sql.SQLException;
  * @since 2.0
  */
 public class Hibernate4Access extends HibernateAccess implements DBAccess {
+
+    @Override
     public Session getSession() {
         return sessionFactory.getCurrentSession();
     }
@@ -44,6 +46,7 @@ public class Hibernate4Access extends HibernateAccess implements DBAccess {
     /**
      * 取得hibernate的connection对象
      */
+    @Override
     protected Connection getConnection() throws SQLException {
         if (sessionFactory instanceof SessionFactoryImpl) {
             SessionFactoryImpl sessionFactoryImpl = (SessionFactoryImpl) sessionFactory;
@@ -53,10 +56,12 @@ public class Hibernate4Access extends HibernateAccess implements DBAccess {
         return null;
     }
 
+    @Override
     public Blob createBlob(byte[] bytes) {
         return getSession().getLobHelper().createBlob(bytes);
     }
 
+    @Override
     public void runScript() {
         getSession().doWork(new Work() {
             public void execute(Connection conn) throws SQLException {

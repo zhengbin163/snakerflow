@@ -55,7 +55,8 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 	public void setSessionFactory(final SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+
+	@Override
 	public void initialize(Object accessObject) {
 		if(accessObject == null) return;
 		if(accessObject instanceof SessionFactory) {
@@ -73,10 +74,12 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
     /**
      * 取得hibernate的connection对象
      */
+	@Override
     protected Connection getConnection() throws SQLException {
         return null;
     }
 
+	@Override
     @SuppressWarnings("deprecation")
 	public void updateProcess(Process process) {
 		try {
@@ -90,6 +93,7 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		getSession().saveOrUpdate(process);
 	}
 
+	@Override
 	@SuppressWarnings("deprecation")
 	public void saveProcess(Process process) {
 		try {
@@ -105,10 +109,12 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		getSession().saveOrUpdate(process);
 	}
 
+	@Override
 	public void deleteProcess(Process process) {
 		getSession().delete(process);
 	}
-	
+
+	@Override
 	public void deleteTask(Task task) {
 		List<TaskActor> actors = getTaskActorsByTaskId(task.getId());
 		for(TaskActor actor : actors) {
@@ -117,14 +123,17 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		getSession().delete(task);
 	}
 
+	@Override
 	public void deleteOrder(Order order) {
 		getSession().delete(order);
 	}
 
+	@Override
 	public void deleteHistoryOrder(HistoryOrder historyOrder) {
 		getSession().delete(historyOrder);
 	}
 
+	@Override
 	public void deleteHistoryTask(HistoryTask historyTask) {
 		List<HistoryTaskActor> actors = getHistTaskActorsByTaskId(historyTask.getId());
 		for(HistoryTaskActor actor : actors) {
@@ -133,14 +142,17 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		getSession().delete(historyTask);
 	}
 
+	@Override
 	public void deleteSurrogate(Surrogate surrogate) {
 		getSession().delete(surrogate);
 	}
-	
+
+	@Override
 	public void deleteCCOrder(CCOrder ccorder) {
 		getSession().delete(ccorder);
 	}
-	
+
+	@Override
 	public void removeTaskActor(String taskId, String... actors) {
 		for(String actorId : actors) {
 			TaskActor ta = new TaskActor();
@@ -149,15 +161,18 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 			getSession().delete(ta);
 		}
 	}
-	
+
+	@Override
 	public boolean isORM() {
 		return true;
 	}
-	
+
+	@Override
 	public void saveOrUpdate(Map<String, Object> map) {
 		getSession().saveOrUpdate(map.get(KEY_ENTITY));
 	}
-	
+
+	@Override
 	public Integer getLatestProcessVersion(String name) {
 		SQLQuery query = getSession().createSQLQuery(QUERY_VERSION + " where name = ?");
 		query.setParameter(0, name);
@@ -165,6 +180,7 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		return new Long(ClassHelper.castLong(result)).intValue();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T queryObject(Class<T> T, String sql, Object... args) {
 		SQLQuery query = getSession().createSQLQuery(sql);
@@ -175,6 +191,7 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		return (T)query.uniqueResult();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> List<T> queryList(Class<T> clazz, String sql, Object... args) {
 		SQLQuery query = getSession().createSQLQuery(sql);
@@ -185,6 +202,7 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
 		return (List<T>)query.list();
 	}
 
+	@Override
     public Object queryCount(String sql, Object... args) {
         SQLQuery countQuery = getSession().createSQLQuery(sql);
         if(args.length > 0) {
@@ -195,5 +213,5 @@ public abstract class HibernateAccess extends AbstractDBAccess implements DBAcce
         return countQuery.uniqueResult();
     }
 
-    public abstract Blob createBlob(byte[] bytes);
+	public abstract Blob createBlob(byte[] bytes);
 }

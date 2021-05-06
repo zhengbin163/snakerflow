@@ -17,7 +17,9 @@ package org.snaker.engine.entity;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Blob;
+import java.sql.SQLException;
 
+import org.apache.log4j.lf5.util.StreamUtils;
 import org.snaker.engine.SnakerException;
 import org.snaker.engine.helper.StreamHelper;
 import org.snaker.engine.model.ProcessModel;
@@ -77,7 +79,7 @@ public class Process implements Serializable {
     /**
      * 流程定义xml
      */
-    private Blob content;
+    private String content;
     /**
      * 流程定义字节数组
      */
@@ -136,26 +138,43 @@ public class Process implements Serializable {
 	}
 	public byte[] getDBContent() {
 		if(this.content != null) {
-			try {
-				return this.content.getBytes(1L, Long.valueOf(this.content.length()).intValue());
-			} catch (Exception e) {
-				try {
-					InputStream is = content.getBinaryStream();
-					return StreamHelper.readBytes(is);
-				} catch (Exception e1) {
-					throw new SnakerException("couldn't extract stream out of blob", e1);
-				}
-			}
+//			try {
+//				return this.content.getBytes(1L, Long.valueOf(this.content.length()).intValue());
+//			} catch (Exception e) {
+//				try {
+//					InputStream is = content.getBinaryStream();
+//					return StreamHelper.readBytes(is);
+//				} catch (Exception e1) {
+//					throw new SnakerException("couldn't extract stream out of blob", e1);
+//				}
+//			}
+			return this.content.getBytes();
 		}
 		
 		return bytes;
 	}
-	public Blob getContent() {
+//	public Blob getContent() {
+//		return content;
+//	}
+//	public void setContent(Blob content) {
+//		this.content = content;
+//	}
+
+
+	public String getContent() {
 		return content;
 	}
-	public void setContent(Blob content) {
+
+	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public void setContent(Blob blob) throws Exception {
+		if(blob != null){
+			this.content = new String(StreamHelper.readBytes(blob.getBinaryStream()));
+		}
+	}
+
 	public byte[] getBytes() {
 		return bytes;
 	}
